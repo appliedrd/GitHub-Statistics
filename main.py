@@ -18,12 +18,13 @@ g = Github(settings.access_token)
 git_repos = []
 first = True
 for repo in g.get_user().get_repos():
-    df = repo_dataframe(repo)
-    if first:
-        git_repos = df
-        first = False
-    else:
-        git_repos = git_repos.append(df)
+    if repo.private and not repo.archived:
+        df = repo_dataframe(g, repo)
+        if first:
+            git_repos = df
+            first = False
+        else:
+            git_repos = git_repos.append(df)
 
 git_repos.to_csv(settings.output_csv)
 
