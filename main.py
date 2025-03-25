@@ -17,6 +17,7 @@ g = Github(settings.access_token)
 
 git_repos = []
 first = True
+
 for repo in g.get_user().get_repos():
     if repo.private and not repo.archived:
         df = repo_dataframe(g, repo)
@@ -26,5 +27,7 @@ for repo in g.get_user().get_repos():
         else:
             git_repos = git_repos.append(df)
 
-git_repos.to_csv(settings.output_csv)
+# Convert the list to a pandas DataFrame
+df = pd.DataFrame(git_repos)
+df.to_csv(settings.output_csv)
 
